@@ -1,0 +1,32 @@
+<section class="auth-card wide">
+  <p class="eyebrow">Nueva cuenta</p>
+  <h1>Registrate</h1>
+  <p class="intro">Creá tu cuenta para confirmar y consultar reservas.</p>
+  @if (error()) {
+    <div class="error" role="alert">{{ error() }}</div>
+  }
+  <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+    <div class="row">
+      <label>Nombre <input formControlName="first_name" autocomplete="given-name" /></label>
+      <label>Apellido <input formControlName="last_name" autocomplete="family-name" /></label>
+    </div>
+    <label>Email <input type="email" formControlName="email_address" autocomplete="email" /></label>
+    <label>Teléfono (opcional) <input formControlName="phone" autocomplete="tel" /></label>
+    <div class="row">
+      <label
+        >Contraseña <input type="password" formControlName="password" autocomplete="new-password"
+      /></label>
+      <label
+        >Repetir contraseña
+        <input type="password" formControlName="password_confirmation" autocomplete="new-password"
+      /></label>
+    </div>
+    <p class="hint">
+      Todos los campos, salvo teléfono, son obligatorios. La contraseña requiere 8 caracteres.
+    </p>
+    <button type="submit" [disabled]="submitting()">
+      {{ submitting() ? 'Creando cuenta…' : 'Crear cuenta' }}
+    </button>
+  </form>
+  <p class="alternate">¿Ya tenés cuenta? <a routerLink="/ingresar">Ingresá</a></p>
+</section>

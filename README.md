@@ -28,9 +28,16 @@ npm run build
 npm audit --omit=dev --audit-level=high
 ```
 
-## Estado de la etapa 2
+## Estado de la etapa 3
 
-Esta etapa establece el repositorio independiente, la configuración de Angular, el contrato de
-modelos compartidos, el almacenamiento de sesión, la navegación inicial y la integración continua.
-Las pantallas todavía son marcadores de posición: autenticación, servicios, reservas, turnos y
-perfil se implementarán de forma incremental en las siguientes etapas.
+La primera integración con Rails incluye:
+
+- registro, login y logout reales;
+- sesión por pestaña en `sessionStorage`;
+- token bearer automático y recuperación global ante respuestas `401`;
+- guardas para turnos y perfil;
+- catálogo con estados de carga, vacío y error;
+- selección de profesional, fecha y horario, y creación de una reserva real.
+
+El historial y cancelación de turnos, la edición de perfil y la revisión final de accesibilidad se
+completarán en la etapa 4.

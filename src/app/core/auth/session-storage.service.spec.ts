@@ -14,10 +14,10 @@ describe('SessionStorageService', () => {
       token: 'test-token',
       user: {
         id: 1,
-        email: 'user@example.com',
+        email_address: 'user@example.com',
         first_name: 'Ada',
         last_name: 'Lovelace',
-        role: 'customer' as const,
+        phone: null,
       },
     };
 

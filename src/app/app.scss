@@ -39,6 +39,12 @@ nav a {
   color: var(--muted);
   text-decoration: none;
 }
+
+nav button {
+  border: 0;
+  font: inherit;
+  cursor: pointer;
+}
 nav a:hover,
 nav a.active {
   color: var(--primary);

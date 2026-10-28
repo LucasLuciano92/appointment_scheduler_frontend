@@ -5,9 +5,14 @@
   </a>
   <nav aria-label="Navegación principal">
     <a routerLink="/servicios" routerLinkActive="active">Servicios</a>
-    <a routerLink="/turnos" routerLinkActive="active">Mis turnos</a>
-    <a routerLink="/perfil" routerLinkActive="active">Perfil</a>
-    <a class="button" routerLink="/ingresar">Ingresar</a>
+    @if (auth.session()) {
+      <a routerLink="/turnos" routerLinkActive="active">Mis turnos</a>
+      <a routerLink="/perfil" routerLinkActive="active">Perfil</a>
+      <button class="button" type="button" (click)="logout()">Salir</button>
+    } @else {
+      <a routerLink="/registro" routerLinkActive="active">Registrarse</a>
+      <a class="button" routerLink="/ingresar">Ingresar</a>
+    }
   </nav>
 </header>
 
