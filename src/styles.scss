@@ -1,0 +1,29 @@
+:root {
+  color: #16202a;
+  background: #f7f9fb;
+  font-family: Inter, system-ui, sans-serif;
+  --ink: #16202a;
+  --muted: #607080;
+  --primary: #087f73;
+  --primary-hover: #06685f;
+  --primary-soft: #e6f4f2;
+  --border: #dce4e8;
+}
+
+* {
+  box-sizing: border-box;
+}
+html {
+  min-width: 320px;
+  min-height: 100%;
+}
+body {
+  min-height: 100vh;
+  margin: 0;
+}
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
