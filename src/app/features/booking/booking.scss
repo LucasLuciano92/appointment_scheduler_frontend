@@ -1,0 +1,132 @@
+.back {
+  color: var(--primary);
+  text-decoration: none;
+}
+.booking-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(15rem, 1fr);
+  gap: 3rem;
+  margin-top: 2rem;
+}
+section {
+  padding: clamp(1.5rem, 4vw, 3rem);
+  border: 1px solid var(--border);
+  border-radius: 1.5rem;
+  background: white;
+}
+.eyebrow {
+  margin: 0;
+  color: var(--primary);
+  font-weight: 750;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+h1 {
+  margin: 0.5rem 0;
+  font-size: clamp(2.2rem, 5vw, 4rem);
+}
+.description,
+.muted {
+  color: var(--muted);
+}
+.step {
+  padding: 1.5rem 0;
+  border-top: 1px solid var(--border);
+}
+h2 {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-size: 1.1rem;
+}
+h2 span {
+  display: grid;
+  width: 1.8rem;
+  height: 1.8rem;
+  place-items: center;
+  border-radius: 50%;
+  color: white;
+  background: var(--primary);
+  font-size: 0.8rem;
+}
+label {
+  display: grid;
+  gap: 0.5rem;
+  font-weight: 650;
+}
+input,
+textarea {
+  max-width: 30rem;
+  padding: 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: 0.65rem;
+}
+.options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 1rem;
+}
+button {
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 0.7rem;
+  color: var(--ink);
+  background: white;
+  cursor: pointer;
+}
+button.selected {
+  color: var(--primary);
+  border-color: var(--primary);
+  background: var(--primary-soft);
+}
+button.primary {
+  margin-top: 1rem;
+  color: white;
+  border-color: var(--primary);
+  background: var(--primary);
+}
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+.message {
+  margin: 1rem 0;
+  padding: 0.8rem;
+  border-radius: 0.6rem;
+}
+.error {
+  color: #a12828;
+  background: #fff0f0;
+}
+.success {
+  color: #146b38;
+  background: #eaf8ef;
+}
+aside {
+  align-self: start;
+  position: sticky;
+  top: 2rem;
+  padding: 1.5rem;
+  border-radius: 1.2rem;
+  color: white;
+  background: #173b3a;
+}
+aside > span {
+  display: block;
+  opacity: 0.75;
+}
+aside > strong {
+  display: block;
+  margin: 0.5rem 0 1.5rem;
+  font-size: 2rem;
+}
+@media (max-width: 760px) {
+  .booking-grid {
+    grid-template-columns: 1fr;
+  }
+  aside {
+    position: static;
+    grid-row: 1;
+  }
+}

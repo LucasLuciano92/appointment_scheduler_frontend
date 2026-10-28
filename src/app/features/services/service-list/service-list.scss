@@ -1,0 +1,72 @@
+.intro {
+  max-width: 55rem;
+  margin-bottom: 3rem;
+}
+.intro > p {
+  color: var(--primary);
+  font-weight: 750;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+h1 {
+  margin: 0.5rem 0 1rem;
+  font-size: clamp(2.4rem, 6vw, 5rem);
+  line-height: 1;
+  letter-spacing: -0.05em;
+}
+.intro span,
+article p {
+  color: var(--muted);
+  line-height: 1.6;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+  gap: 1.25rem;
+}
+article {
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 1.2rem;
+  background: white;
+}
+article img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+.content {
+  padding: 1.4rem;
+}
+.meta {
+  display: flex;
+  justify-content: space-between;
+  color: var(--primary);
+  font-size: 0.9rem;
+}
+h2 {
+  margin: 0.8rem 0 0.5rem;
+}
+article a,
+button {
+  display: inline-block;
+  margin-top: 0.8rem;
+  padding: 0.7rem 0.9rem;
+  border: 0;
+  border-radius: 0.65rem;
+  color: white;
+  background: var(--primary);
+  text-decoration: none;
+  font-weight: 700;
+  cursor: pointer;
+}
+.state {
+  padding: 2rem;
+  border-radius: 1rem;
+  background: white;
+  text-align: center;
+}
+.error {
+  color: #8c2020;
+  background: #fff0f0;
+}

@@ -1,29 +1,37 @@
 import { Routes } from '@angular/router';
-import { PagePlaceholder } from './shared/page-placeholder/page-placeholder';
+import { authGuard } from './core/auth/auth.guard';
 
 export const routes: Routes = [
   {
     path: 'servicios',
-    component: PagePlaceholder,
-    data: {
-      title: 'Servicios',
-      description: 'Elegí un servicio para comenzar a reservar tu turno.',
-    },
+    loadComponent: () =>
+      import('./features/services/service-list/service-list').then((m) => m.ServiceList),
+  },
+  {
+    path: 'reservar/:serviceId',
+    loadComponent: () => import('./features/booking/booking').then((m) => m.Booking),
   },
   {
     path: 'turnos',
-    component: PagePlaceholder,
+    loadComponent: () =>
+      import('./shared/page-placeholder/page-placeholder').then((m) => m.PagePlaceholder),
+    canActivate: [authGuard],
     data: { title: 'Mis turnos', description: 'Consultá y administrá tus próximas reservas.' },
   },
   {
     path: 'perfil',
-    component: PagePlaceholder,
+    loadComponent: () =>
+      import('./shared/page-placeholder/page-placeholder').then((m) => m.PagePlaceholder),
+    canActivate: [authGuard],
     data: { title: 'Mi perfil', description: 'Actualizá tus datos personales y preferencias.' },
   },
   {
     path: 'ingresar',
-    component: PagePlaceholder,
-    data: { title: 'Ingresar', description: 'Accedé con tu cuenta para gestionar turnos.' },
+    loadComponent: () => import('./features/auth/login/login').then((m) => m.Login),
+  },
+  {
+    path: 'registro',
+    loadComponent: () => import('./features/auth/register/register').then((m) => m.Register),
   },
   { path: '', pathMatch: 'full', redirectTo: 'servicios' },
   { path: '**', redirectTo: 'servicios' },

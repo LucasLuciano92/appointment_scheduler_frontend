@@ -1,0 +1,104 @@
+<a class="back" routerLink="/servicios">← Volver a servicios</a>
+
+@if (loading()) {
+  <p role="status">Cargando disponibilidad…</p>
+} @else if (!service()) {
+  <div class="message error" role="alert">{{ error() || 'No encontramos el servicio.' }}</div>
+} @else {
+  <div class="booking-grid">
+    <section>
+      <p class="eyebrow">Reservar turno</p>
+      <h1>{{ service()!.name }}</h1>
+      <p class="description">{{ service()!.description }}</p>
+
+      @if (error()) {
+        <div class="message error" role="alert">{{ error() }}</div>
+      }
+      @if (success()) {
+        <div class="message success" role="status">{{ success() }}</div>
+      }
+
+      <div class="step">
+        <h2><span>1</span> Elegí profesional</h2>
+        @if (staff().length === 0) {
+          <p>No hay profesionales disponibles.</p>
+        }
+        <div class="options">
+          @for (person of staff(); track person.service_offering_id) {
+            <button
+              type="button"
+              [class.selected]="selectedStaff()?.service_offering_id === person.service_offering_id"
+              (click)="selectedStaff.set(person); selectedSlot.set(null); slots.set([])"
+            >
+              {{ person.first_name }} {{ person.last_name }}
+            </button>
+          }
+        </div>
+      </div>
+
+      <div class="step">
+        <h2><span>2</span> Elegí fecha y horario</h2>
+        <label
+          >Fecha
+          <input
+            type="date"
+            [(ngModel)]="date"
+            [min]="minDate"
+            [disabled]="!selectedStaff()"
+            (change)="loadSlots()"
+        /></label>
+        @if (date && selectedStaff() && slots().length === 0) {
+          <p class="muted">No hay horarios libres para esta fecha.</p>
+        }
+        <div class="options slots">
+          @for (slot of slots(); track slot.starts_at) {
+            <button
+              type="button"
+              [class.selected]="selectedSlot()?.starts_at === slot.starts_at"
+              (click)="selectedSlot.set(slot)"
+            >
+              {{ slot.starts_at | date: 'HH:mm' }}
+            </button>
+          }
+        </div>
+      </div>
+
+      <div class="step">
+        <h2><span>3</span> Confirmá</h2>
+        <label
+          >Notas opcionales
+          <textarea
+            [(ngModel)]="notes"
+            rows="3"
+            placeholder="Indicaciones para el profesional"
+          ></textarea>
+        </label>
+        @if (!auth.session()) {
+          <p class="muted">Al confirmar te pediremos iniciar sesión. Tu selección se conservará.</p>
+        }
+        <button class="primary" type="button" [disabled]="!canSubmit()" (click)="reserve()">
+          {{
+            submitting()
+              ? 'Reservando…'
+              : auth.session()
+                ? 'Confirmar turno'
+                : 'Ingresar y confirmar'
+          }}
+        </button>
+      </div>
+    </section>
+
+    <aside>
+      <span>{{ service()!.duration_minutes }} minutos</span>
+      <strong>${{ service()!.price }}</strong>
+      @if (selectedStaff()) {
+        <p>
+          <b>Profesional</b><br />{{ selectedStaff()!.first_name }} {{ selectedStaff()!.last_name }}
+        </p>
+      }
+      @if (selectedSlot()) {
+        <p><b>Horario</b><br />{{ selectedSlot()!.starts_at | date: 'dd/MM/yyyy HH:mm' }}</p>
+      }
+    </aside>
+  </div>
+}

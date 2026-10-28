@@ -1,0 +1,35 @@
+<section class="intro">
+  <p>Reservas online</p>
+  <h1>Encontrá el servicio y el horario que necesitás.</h1>
+  <span>Elegí una opción para ver profesionales y disponibilidad en tiempo real.</span>
+</section>
+
+@if (loading()) {
+  <p class="state" role="status">Cargando servicios…</p>
+} @else if (error()) {
+  <div class="state error" role="alert">
+    <p>{{ error() }}</p>
+    <button type="button" (click)="load()">Reintentar</button>
+  </div>
+} @else if (services().length === 0) {
+  <p class="state">Todavía no hay servicios disponibles.</p>
+} @else {
+  <div class="grid">
+    @for (service of services(); track service.id) {
+      <article>
+        @if (service.image_url) {
+          <img [src]="service.image_url" [alt]="service.name" />
+        }
+        <div class="content">
+          <div class="meta">
+            <span>{{ service.duration_minutes }} min</span
+            ><strong>{{ +service.price | currency: 'ARS' : 'symbol-narrow' : '1.0-0' }}</strong>
+          </div>
+          <h2>{{ service.name }}</h2>
+          <p>{{ service.description || 'Servicio disponible para reservar online.' }}</p>
+          <a [routerLink]="['/reservar', service.id]">Ver disponibilidad</a>
+        </div>
+      </article>
+    }
+  </div>
+}
