@@ -8,35 +8,54 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1rem clamp(1rem, 5vw, 5rem);
+  min-height: 4.25rem;
+  padding: 0.7rem clamp(1rem, 4vw, 4.5rem);
   border-bottom: 1px solid var(--border);
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(0.75rem);
+  -webkit-backdrop-filter: blur(0.75rem);
 }
 
 .brand {
   display: flex;
   align-items: center;
-  gap: 0.7rem;
-  font-weight: 750;
+  gap: 0.65rem;
+  font-size: 0.95rem;
+  font-weight: 700;
   color: var(--ink);
   text-decoration: none;
 }
 
 .brand__mark {
-  padding: 0.45rem;
-  border-radius: 0.55rem;
+  display: grid;
+  width: 2.2rem;
+  height: 2.2rem;
+  place-items: center;
+  border-radius: 0.7rem 0.7rem 0.7rem 0.25rem;
   color: white;
   background: var(--primary);
 }
 
+.brand__mark svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
 nav {
   display: flex;
+  align-items: center;
   gap: 0.25rem;
 }
 nav a {
-  padding: 0.7rem 0.8rem;
+  padding: 0.6rem 0.75rem;
   border-radius: 0.65rem;
   color: var(--muted);
+  font-size: 0.9rem;
   text-decoration: none;
 }
 
@@ -60,23 +79,76 @@ nav .button:hover {
   background: var(--primary-hover);
 }
 main {
-  padding: clamp(2rem, 8vw, 6rem) clamp(1rem, 8vw, 8rem);
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: clamp(2.5rem, 5vw, 4.75rem) clamp(1rem, 6vw, 7rem);
+}
+main::before {
+  position: absolute;
+  right: clamp(-9rem, -2vw, -2rem);
+  bottom: -10rem;
+  z-index: -1;
+  width: clamp(22rem, 32vw, 36rem);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background:
+    radial-gradient(
+      circle,
+      transparent 0 42%,
+      rgba(33, 124, 108, 0.09) 42.3% 42.8%,
+      transparent 43.1%
+    ),
+    radial-gradient(circle, rgba(212, 134, 109, 0.08) 0 29%, transparent 29.4%);
+  content: '';
+}
+main::after {
+  position: absolute;
+  top: clamp(2rem, 8vw, 7rem);
+  left: clamp(-10rem, -7vw, -5rem);
+  z-index: -1;
+  width: clamp(15rem, 22vw, 23rem);
+  aspect-ratio: 1 / 1.15;
+  border: 1px solid rgba(33, 124, 108, 0.08);
+  border-radius: 46% 54% 62% 38% / 52% 42% 58% 48%;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.24), rgba(231, 200, 142, 0.08));
+  box-shadow:
+    2.5rem 2rem 0 rgba(212, 134, 109, 0.035),
+    4.5rem -1.5rem 0 rgba(33, 124, 108, 0.025);
+  transform: rotate(-14deg);
+  content: '';
+}
+main:has(app-booking) {
+  padding-block: clamp(1rem, 3vh, 2rem);
+}
+main:has(app-booking)::before,
+main:has(app-booking)::after {
+  display: none;
 }
 footer {
-  padding: 1.5rem;
+  padding: 1rem;
   text-align: center;
   color: var(--muted);
   border-top: 1px solid var(--border);
+  background: rgba(247, 248, 245, 0.72);
+  backdrop-filter: blur(0.5rem);
+  -webkit-backdrop-filter: blur(0.5rem);
+  font-size: 0.85rem;
 }
 
 @media (max-width: 720px) {
   .site-header {
     flex-direction: column;
     align-items: flex-start;
-    gap: 1rem;
+    gap: 0.65rem;
+    padding-block: 0.8rem;
   }
   nav {
     width: 100%;
     flex-wrap: wrap;
+  }
+
+  main {
+    padding-block: 2.25rem;
   }
 }
