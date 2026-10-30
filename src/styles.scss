@@ -1,13 +1,16 @@
 :root {
-  color: #16202a;
-  background: #f7f9fb;
+  color: #1f2d29;
+  background: #f7f8f5;
   font-family: Inter, system-ui, sans-serif;
-  --ink: #16202a;
-  --muted: #607080;
-  --primary: #087f73;
-  --primary-hover: #06685f;
-  --primary-soft: #e6f4f2;
-  --border: #dce4e8;
+  --ink: #1f2d29;
+  --muted: #66746f;
+  --primary: #217c6c;
+  --primary-hover: #176456;
+  --primary-soft: #e6f2ee;
+  --accent: #d4866d;
+  --accent-soft: #f5ded5;
+  --sand: #e7c88e;
+  --border: #d9e2de;
 }
 
 * {
@@ -18,8 +21,44 @@ html {
   min-height: 100%;
 }
 body {
+  position: relative;
   min-height: 100vh;
   margin: 0;
+  color: var(--ink);
+  background:
+    linear-gradient(rgba(33, 124, 108, 0.022) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(33, 124, 108, 0.022) 1px, transparent 1px),
+    radial-gradient(ellipse at 5% 3%, rgba(171, 218, 198, 0.58), transparent 34rem),
+    radial-gradient(ellipse at 94% 8%, rgba(230, 168, 145, 0.3), transparent 30rem),
+    radial-gradient(ellipse at 82% 94%, rgba(231, 200, 142, 0.35), transparent 32rem),
+    radial-gradient(ellipse at 18% 86%, rgba(151, 196, 186, 0.23), transparent 27rem),
+    linear-gradient(135deg, #fcfdfb 0%, #f2f8f5 43%, #fbf4ef 72%, #f8f5ed 100%);
+  background-attachment: fixed;
+  background-position: center, center, center, center, center, center, center;
+  background-size:
+    3.5rem 3.5rem,
+    3.5rem 3.5rem,
+    auto,
+    auto,
+    auto,
+    auto,
+    auto;
+}
+
+body::before {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 16% 65%, rgba(255, 255, 255, 0.62) 0 4rem, transparent 12rem),
+    radial-gradient(circle at 73% 28%, rgba(255, 255, 255, 0.38) 0 3rem, transparent 11rem);
+  content: '';
+}
+
+app-root {
+  position: relative;
+  z-index: 1;
 }
 button,
 input,

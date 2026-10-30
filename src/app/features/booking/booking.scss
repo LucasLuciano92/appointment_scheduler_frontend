@@ -2,18 +2,26 @@
   color: var(--primary);
   text-decoration: none;
 }
+
 .booking-grid {
   display: grid;
-  grid-template-columns: minmax(0, 2fr) minmax(15rem, 1fr);
-  gap: 3rem;
-  margin-top: 2rem;
+  grid-template-columns: minmax(0, 3fr) minmax(13rem, 1fr);
+  gap: clamp(1rem, 2vw, 2rem);
+  margin-top: 0.75rem;
 }
+
 section {
-  padding: clamp(1.5rem, 4vw, 3rem);
+  min-width: 0;
+  padding: clamp(1rem, 2vw, 1.5rem);
   border: 1px solid var(--border);
-  border-radius: 1.5rem;
+  border-radius: 1.25rem;
   background: white;
 }
+
+.booking-heading {
+  margin-bottom: 1rem;
+}
+
 .eyebrow {
   margin: 0;
   color: var(--primary);
@@ -21,26 +29,57 @@ section {
   text-transform: uppercase;
   letter-spacing: 0.08em;
 }
+
 h1 {
-  margin: 0.5rem 0;
-  font-size: clamp(2.2rem, 5vw, 4rem);
+  margin: 0.2rem 0;
+  font-size: clamp(1.8rem, 3vw, 2.75rem);
+  line-height: 1.05;
 }
+
 .description,
 .muted {
   color: var(--muted);
 }
-.step {
-  padding: 1.5rem 0;
+
+.description {
+  margin: 0.35rem 0 0;
+}
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   border-top: 1px solid var(--border);
 }
+
+.step {
+  min-width: 0;
+  padding: 1rem;
+}
+
+.step:first-child {
+  padding-left: 0;
+}
+
+.step:last-child {
+  padding-right: 0;
+}
+
+.step + .step {
+  border-left: 1px solid var(--border);
+}
+
 h2 {
   display: flex;
   align-items: center;
   gap: 0.7rem;
+  margin: 0 0 0.8rem;
   font-size: 1.1rem;
+  line-height: 1.25;
 }
+
 h2 span {
   display: grid;
+  flex: 0 0 auto;
   width: 1.8rem;
   height: 1.8rem;
   place-items: center;
@@ -51,24 +90,38 @@ h2 span {
 }
 label {
   display: grid;
-  gap: 0.5rem;
+  gap: 0.35rem;
   font-weight: 650;
 }
+
 input,
 textarea {
+  width: 100%;
   max-width: 30rem;
-  padding: 0.8rem;
+  padding: 0.65rem;
   border: 1px solid var(--border);
   border-radius: 0.65rem;
 }
+
+textarea {
+  resize: vertical;
+}
+
 .options {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.6rem;
-  margin-top: 1rem;
+  gap: 0.45rem;
+  margin-top: 0.6rem;
 }
+
+.slots {
+  max-height: 7rem;
+  overflow-y: auto;
+  align-content: flex-start;
+}
+
 button {
-  padding: 0.75rem 1rem;
+  padding: 0.6rem 0.8rem;
   border: 1px solid var(--border);
   border-radius: 0.7rem;
   color: var(--ink);
@@ -81,7 +134,8 @@ button.selected {
   background: var(--primary-soft);
 }
 button.primary {
-  margin-top: 1rem;
+  width: 100%;
+  margin-top: 0.75rem;
   color: white;
   border-color: var(--primary);
   background: var(--primary);
@@ -91,8 +145,8 @@ button:disabled {
   opacity: 0.55;
 }
 .message {
-  margin: 1rem 0;
-  padding: 0.8rem;
+  margin: 0.75rem 0;
+  padding: 0.65rem;
   border-radius: 0.6rem;
 }
 .error {
@@ -106,8 +160,8 @@ button:disabled {
 aside {
   align-self: start;
   position: sticky;
-  top: 2rem;
-  padding: 1.5rem;
+  top: 1rem;
+  padding: 1.25rem;
   border-radius: 1.2rem;
   color: white;
   background: #173b3a;
@@ -118,15 +172,38 @@ aside > span {
 }
 aside > strong {
   display: block;
-  margin: 0.5rem 0 1.5rem;
-  font-size: 2rem;
+  margin: 0.25rem 0 1rem;
+  font-size: 1.8rem;
 }
-@media (max-width: 760px) {
+
+aside p:last-child {
+  margin-bottom: 0;
+}
+
+@media (max-width: 980px) {
   .booking-grid {
     grid-template-columns: 1fr;
   }
+
   aside {
     position: static;
     grid-row: 1;
+  }
+}
+
+@media (max-width: 720px) {
+  .steps {
+    grid-template-columns: 1fr;
+  }
+
+  .step,
+  .step:first-child,
+  .step:last-child {
+    padding: 1rem 0;
+  }
+
+  .step + .step {
+    border-top: 1px solid var(--border);
+    border-left: 0;
   }
 }
