@@ -7,6 +7,21 @@
   <a routerLink="/servicios">Reservar otro turno</a>
 </header>
 
+<div class="filters">
+  <label for="appointment-status">Filtrar por estado</label>
+  <select
+    id="appointment-status"
+    [value]="selectedStatus()"
+    [disabled]="loading() || loadingMore()"
+    (change)="filterByStatus($any($event.target).value)"
+  >
+    <option value="">Todos</option>
+    <option value="scheduled">Confirmados</option>
+    <option value="cancelled">Cancelados</option>
+    <option value="completed">Completados</option>
+  </select>
+</div>
+
 @if (success()) {
   <div class="message success" role="status">{{ success() }}</div>
 }
@@ -20,9 +35,15 @@
   </div>
 } @else if (appointments().length === 0) {
   <div class="state empty">
-    <h2>Todavía no tenés turnos</h2>
-    <p>Elegí un servicio y encontrá un horario disponible.</p>
-    <a routerLink="/servicios">Ver servicios</a>
+    @if (selectedStatus()) {
+      <h2>No hay turnos con este estado</h2>
+      <p>Probá con otro filtro o consultá todos tus turnos.</p>
+      <button type="button" (click)="filterByStatus('')">Ver todos</button>
+    } @else {
+      <h2>Todavía no tenés turnos</h2>
+      <p>Elegí un servicio y encontrá un horario disponible.</p>
+      <a routerLink="/servicios">Ver servicios</a>
+    }
   </div>
 } @else {
   @if (error()) {
@@ -75,6 +96,8 @@
           @if (appointment.notes) {
             <p class="notes"><strong>Notas:</strong> {{ appointment.notes }}</p>
           }
+
+          <a class="detail-action" [routerLink]="['/turnos', appointment.id]">Ver detalle</a>
 
           @if (pendingCancellationId() === appointment.id) {
             <div class="confirmation" role="alert">

@@ -16,7 +16,9 @@
     @if (auth.session()) {
       <a routerLink="/turnos" routerLinkActive="active" ariaCurrentWhenActive="page">Mis turnos</a>
       <a routerLink="/perfil" routerLinkActive="active" ariaCurrentWhenActive="page">Perfil</a>
-      <button class="button" type="button" (click)="logout()">Salir</button>
+      <button class="button" type="button" [disabled]="loggingOut()" (click)="logout()">
+        {{ loggingOut() ? 'Saliendo…' : 'Salir' }}
+      </button>
     } @else {
       <a routerLink="/registro" routerLinkActive="active" ariaCurrentWhenActive="page"
         >Registrarse</a

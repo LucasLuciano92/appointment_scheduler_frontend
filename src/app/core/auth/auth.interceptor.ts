@@ -17,7 +17,7 @@ export const authInterceptor: HttpInterceptorFn = (request, next) => {
 
   return next(authenticatedRequest).pipe(
     catchError((error: HttpErrorResponse) => {
-      if (apiRequest && error.status === 401) {
+      if (apiRequest && error.status === 401 && session) {
         storage.clear();
         const returnUrl = router.url.startsWith('/') ? router.url : '/servicios';
         void router.navigate(['/ingresar'], { queryParams: { returnUrl } });

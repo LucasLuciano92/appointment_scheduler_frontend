@@ -9,3 +9,9 @@ export const authGuard: CanActivateFn = (_route, state) => {
     ? true
     : router.createUrlTree(['/ingresar'], { queryParams: { returnUrl: state.url } });
 };
+
+export const guestGuard: CanActivateFn = () => {
+  const storage = inject(SessionStorageService);
+  const router = inject(Router);
+  return storage.read() ? router.createUrlTree(['/servicios']) : true;
+};

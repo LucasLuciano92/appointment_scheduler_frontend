@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { authGuard } from './core/auth/auth.guard';
+import { authGuard, guestGuard } from './core/auth/auth.guard';
 
 export const routes: Routes = [
   {
@@ -18,6 +18,12 @@ export const routes: Routes = [
     canActivate: [authGuard],
   },
   {
+    path: 'turnos/:id',
+    loadComponent: () =>
+      import('./features/appointments/appointment-detail').then((m) => m.AppointmentDetail),
+    canActivate: [authGuard],
+  },
+  {
     path: 'perfil',
     loadComponent: () => import('./features/profile/profile').then((m) => m.Profile),
     canActivate: [authGuard],
@@ -25,10 +31,12 @@ export const routes: Routes = [
   {
     path: 'ingresar',
     loadComponent: () => import('./features/auth/login/login').then((m) => m.Login),
+    canActivate: [guestGuard],
   },
   {
     path: 'registro',
     loadComponent: () => import('./features/auth/register/register').then((m) => m.Register),
+    canActivate: [guestGuard],
   },
   { path: '', pathMatch: 'full', redirectTo: 'servicios' },
   { path: '**', redirectTo: 'servicios' },

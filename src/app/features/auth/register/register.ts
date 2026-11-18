@@ -1,6 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { finalize } from 'rxjs';
 import { apiErrorMessage, apiFieldErrors } from '../../../core/api/api-error';
 import { AuthService } from '../../../core/auth/auth.service';
@@ -15,6 +15,7 @@ export class Register {
   private readonly fb = inject(FormBuilder);
   private readonly auth = inject(AuthService);
   private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
   protected readonly submitting = signal(false);
   protected readonly error = signal('');
   protected readonly fieldErrors = signal<Record<string, string[]>>({});
@@ -26,6 +27,7 @@ export class Register {
     password: ['', [Validators.required, Validators.minLength(8)]],
     password_confirmation: ['', Validators.required],
   });
+  protected readonly returnUrl = this.safeReturnUrl();
 
   protected submit(): void {
     if (this.form.invalid || this.submitting()) {
@@ -44,7 +46,7 @@ export class Register {
       .register(value)
       .pipe(finalize(() => this.submitting.set(false)))
       .subscribe({
-        next: () => void this.router.navigate(['/servicios']),
+        next: () => void this.router.navigateByUrl(this.returnUrl),
         error: (error) => {
           this.error.set(apiErrorMessage(error));
           this.fieldErrors.set(apiFieldErrors(error));
@@ -54,5 +56,10 @@ export class Register {
 
   protected fieldError(field: string): string {
     return this.fieldErrors()[field]?.join('. ') ?? '';
+  }
+
+  private safeReturnUrl(): string {
+    const value = this.route.snapshot.queryParamMap.get('returnUrl');
+    return value?.startsWith('/') && !value.startsWith('//') ? value : '/servicios';
   }
 }

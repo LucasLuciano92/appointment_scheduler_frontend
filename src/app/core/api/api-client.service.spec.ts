@@ -70,6 +70,29 @@ describe('ApiClientService reservations', () => {
     expect(nextPage).toBe(3);
   });
 
+  it('filters appointments by status when requested', () => {
+    api.appointments(1, 'cancelled').subscribe();
+
+    const request = http.expectOne(
+      (candidate) =>
+        candidate.url === `${API_URL}/appointments` &&
+        candidate.params.get('page') === '1' &&
+        candidate.params.get('status') === 'cancelled',
+    );
+    expect(request.request.method).toBe('GET');
+    request.flush({ data: [], meta: { page: 1, per_page: 25, next_page: null } });
+  });
+
+  it('loads an appointment detail', () => {
+    let appointmentId = 0;
+    api.appointment(17).subscribe(({ data }) => (appointmentId = data.id));
+
+    const request = http.expectOne(`${API_URL}/appointments/17`);
+    expect(request.request.method).toBe('GET');
+    request.flush({ data: { id: 17 } });
+    expect(appointmentId).toBe(17);
+  });
+
   it('cancels an appointment through its action endpoint', () => {
     let status = '';
     api.cancelAppointment(17).subscribe(({ data }) => (status = data.status));

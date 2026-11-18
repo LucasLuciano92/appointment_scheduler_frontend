@@ -40,5 +40,8 @@
       {{ submitting() ? 'Ingresando…' : 'Ingresar' }}
     </button>
   </form>
-  <p class="alternate">¿No tenés cuenta? <a routerLink="/registro">Registrate</a></p>
+  <p class="alternate">
+    ¿No tenés cuenta?
+    <a routerLink="/registro" [queryParams]="{ returnUrl: returnUrl }">Registrate</a>
+  </p>
 </section>

@@ -82,6 +82,27 @@ describe('AppointmentList', () => {
     );
   });
 
+  it('filters the history by appointment status', () => {
+    const select = fixture.nativeElement.querySelector('#appointment-status') as HTMLSelectElement;
+    select.value = 'cancelled';
+    select.dispatchEvent(new Event('change'));
+    fixture.detectChanges();
+
+    const request = http.expectOne(
+      (candidate) =>
+        candidate.url === `${API_URL}/appointments` &&
+        candidate.params.get('page') === '1' &&
+        candidate.params.get('status') === 'cancelled',
+    );
+    request.flush({
+      data: [{ ...appointment, status: 'cancelled' }],
+      meta: { page: 1, per_page: 25, next_page: null },
+    });
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('.status')?.textContent).toContain('Cancelado');
+  });
+
   function click(selector: string): void {
     const button = fixture.nativeElement.querySelector(selector) as HTMLButtonElement;
     button.click();

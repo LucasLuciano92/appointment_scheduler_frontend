@@ -1,0 +1,161 @@
+:host {
+  display: block;
+  width: min(46rem, 100%);
+  margin: 0 auto;
+}
+
+.back {
+  display: inline-block;
+  margin-bottom: 1rem;
+  color: var(--primary);
+  text-decoration: none;
+}
+
+article,
+.state {
+  padding: clamp(1rem, 3vw, 2rem);
+  border: 1px solid var(--border);
+  border-radius: 1.2rem;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 0.65rem 1.75rem rgba(31, 45, 41, 0.05);
+}
+
+header {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.eyebrow {
+  margin: 0 0 0.25rem;
+  color: var(--primary);
+  font-weight: 750;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(2rem, 5vw, 3rem);
+}
+
+.status {
+  padding: 0.35rem 0.65rem;
+  border-radius: 999px;
+  color: #205d4d;
+  background: var(--primary-soft);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.status.cancelled {
+  color: #8a3c32;
+  background: var(--accent-soft);
+}
+
+.status.completed {
+  color: #5c5544;
+  background: #f1eadb;
+}
+
+dl {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+dl div,
+section {
+  padding: 0.9rem;
+  border-radius: 0.8rem;
+  background: #f7faf8;
+}
+
+dt {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+dd {
+  margin: 0.2rem 0 0;
+  font-weight: 700;
+}
+
+section h2,
+section p {
+  margin: 0;
+}
+
+section h2 {
+  margin-bottom: 0.4rem;
+  font-size: 1rem;
+}
+
+button {
+  padding: 0.65rem 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: 0.65rem;
+  color: var(--ink);
+  background: white;
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.cancel-action {
+  color: #9b3d32;
+  border-color: #e2b8b0;
+}
+
+.confirmation,
+.message {
+  margin-top: 1rem;
+  padding: 0.8rem;
+  border-radius: 0.75rem;
+}
+
+.confirmation {
+  background: #fff5f2;
+}
+
+.confirmation p {
+  margin: 0 0 0.65rem;
+  font-weight: 650;
+}
+
+.confirmation div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.confirmation .danger {
+  color: white;
+  border-color: #a64538;
+  background: #a64538;
+}
+
+.error {
+  color: #8d3028;
+  background: #fff0ee;
+}
+
+.success {
+  color: #146b38;
+  background: #eaf8ef;
+}
+
+@media (max-width: 560px) {
+  header {
+    flex-direction: column;
+  }
+
+  dl {
+    grid-template-columns: 1fr;
+  }
+}

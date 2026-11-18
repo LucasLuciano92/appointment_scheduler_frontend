@@ -4,7 +4,7 @@ import { RouterLink } from '@angular/router';
 import { finalize } from 'rxjs';
 import { ApiClientService } from '../../core/api/api-client.service';
 import { apiErrorMessage } from '../../core/api/api-error';
-import { Appointment } from '../../core/models/api.models';
+import { Appointment, AppointmentStatus } from '../../core/models/api.models';
 
 @Component({
   selector: 'app-appointment-list',
@@ -15,6 +15,7 @@ import { Appointment } from '../../core/models/api.models';
 export class AppointmentList {
   private readonly api = inject(ApiClientService);
   protected readonly appointments = signal<Appointment[]>([]);
+  protected readonly selectedStatus = signal<AppointmentStatus | ''>('');
   protected readonly loading = signal(true);
   protected readonly loadingMore = signal(false);
   protected readonly nextPage = signal<number | null>(null);
@@ -38,7 +39,7 @@ export class AppointmentList {
     this.error.set('');
 
     this.api
-      .appointments(page)
+      .appointments(page, this.selectedStatus())
       .pipe(
         finalize(() => {
           this.loading.set(false);
@@ -52,6 +53,20 @@ export class AppointmentList {
         },
         error: (error) => this.error.set(apiErrorMessage(error)),
       });
+  }
+
+  protected filterByStatus(status: string): void {
+    const allowedStatuses: Array<AppointmentStatus | ''> = [
+      '',
+      'scheduled',
+      'cancelled',
+      'completed',
+    ];
+    if (!allowedStatuses.includes(status as AppointmentStatus | '')) return;
+
+    this.selectedStatus.set(status as AppointmentStatus | '');
+    this.success.set('');
+    this.load();
   }
 
   protected canCancel(appointment: Appointment): boolean {
@@ -90,12 +105,12 @@ export class AppointmentList {
       });
   }
 
-  protected statusLabel(status: string): string {
-    const labels: Record<string, string> = {
+  protected statusLabel(status: AppointmentStatus): string {
+    const labels: Record<AppointmentStatus, string> = {
       scheduled: 'Confirmado',
       cancelled: 'Cancelado',
       completed: 'Completado',
     };
-    return labels[status] ?? status;
+    return labels[status];
   }
 }
