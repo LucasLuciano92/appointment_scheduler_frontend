@@ -14,16 +14,13 @@ export const routes: Routes = [
   {
     path: 'turnos',
     loadComponent: () =>
-      import('./shared/page-placeholder/page-placeholder').then((m) => m.PagePlaceholder),
+      import('./features/appointments/appointment-list').then((m) => m.AppointmentList),
     canActivate: [authGuard],
-    data: { title: 'Mis turnos', description: 'Consultá y administrá tus próximas reservas.' },
   },
   {
     path: 'perfil',
-    loadComponent: () =>
-      import('./shared/page-placeholder/page-placeholder').then((m) => m.PagePlaceholder),
+    loadComponent: () => import('./features/profile/profile').then((m) => m.Profile),
     canActivate: [authGuard],
-    data: { title: 'Mi perfil', description: 'Actualizá tus datos personales y preferencias.' },
   },
   {
     path: 'ingresar',

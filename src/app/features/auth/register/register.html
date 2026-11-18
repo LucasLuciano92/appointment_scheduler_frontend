@@ -7,19 +7,88 @@
   }
   <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
     <div class="row">
-      <label>Nombre <input formControlName="first_name" autocomplete="given-name" /></label>
-      <label>Apellido <input formControlName="last_name" autocomplete="family-name" /></label>
+      <label
+        >Nombre
+        <input
+          formControlName="first_name"
+          autocomplete="given-name"
+          [attr.aria-invalid]="
+            (form.controls.first_name.touched && form.controls.first_name.invalid) ||
+            !!fieldError('first_name')
+          "
+        />
+        @if (fieldError('first_name')) {
+          <small>{{ fieldError('first_name') }}</small>
+        }
+      </label>
+      <label
+        >Apellido
+        <input
+          formControlName="last_name"
+          autocomplete="family-name"
+          [attr.aria-invalid]="
+            (form.controls.last_name.touched && form.controls.last_name.invalid) ||
+            !!fieldError('last_name')
+          "
+        />
+        @if (fieldError('last_name')) {
+          <small>{{ fieldError('last_name') }}</small>
+        }
+      </label>
     </div>
-    <label>Email <input type="email" formControlName="email_address" autocomplete="email" /></label>
-    <label>Teléfono (opcional) <input formControlName="phone" autocomplete="tel" /></label>
+    <label
+      >Email
+      <input
+        type="email"
+        formControlName="email_address"
+        autocomplete="email"
+        [attr.aria-invalid]="
+          (form.controls.email_address.touched && form.controls.email_address.invalid) ||
+          !!fieldError('email_address')
+        "
+      />
+      @if (form.controls.email_address.touched && form.controls.email_address.invalid) {
+        <small>Ingresá un email válido.</small>
+      } @else if (fieldError('email_address')) {
+        <small>{{ fieldError('email_address') }}</small>
+      }
+    </label>
+    <label
+      >Teléfono (opcional) <input formControlName="phone" autocomplete="tel" />
+      @if (fieldError('phone')) {
+        <small>{{ fieldError('phone') }}</small>
+      }
+    </label>
     <div class="row">
       <label
-        >Contraseña <input type="password" formControlName="password" autocomplete="new-password"
-      /></label>
+        >Contraseña
+        <input
+          type="password"
+          formControlName="password"
+          autocomplete="new-password"
+          [attr.aria-invalid]="
+            (form.controls.password.touched && form.controls.password.invalid) ||
+            !!fieldError('password')
+          "
+        />
+        @if (form.controls.password.touched && form.controls.password.invalid) {
+          <small>Debe tener al menos 8 caracteres.</small>
+        } @else if (fieldError('password')) {
+          <small>{{ fieldError('password') }}</small>
+        }
+      </label>
       <label
         >Repetir contraseña
-        <input type="password" formControlName="password_confirmation" autocomplete="new-password"
-      /></label>
+        <input
+          type="password"
+          formControlName="password_confirmation"
+          autocomplete="new-password"
+          [attr.aria-invalid]="!!fieldError('password_confirmation')"
+        />
+        @if (fieldError('password_confirmation')) {
+          <small>{{ fieldError('password_confirmation') }}</small>
+        }
+      </label>
     </div>
     <p class="hint">
       Todos los campos, salvo teléfono, son obligatorios. La contraseña requiere 8 caracteres.

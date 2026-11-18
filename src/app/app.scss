@@ -4,6 +4,22 @@
   grid-template-rows: auto 1fr auto;
 }
 
+.skip-link {
+  position: fixed;
+  top: 0.5rem;
+  left: 0.5rem;
+  z-index: 10;
+  padding: 0.65rem 0.85rem;
+  border-radius: 0.5rem;
+  color: white;
+  background: var(--ink);
+  transform: translateY(-150%);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
 .site-header {
   display: flex;
   align-items: center;

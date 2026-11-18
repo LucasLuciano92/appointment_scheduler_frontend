@@ -56,4 +56,42 @@ describe('AuthService', () => {
     expect(status).toBe(401);
     expect(service.session()).toBeNull();
   });
+
+  it('updates the profile and keeps the session user synchronized', () => {
+    service.login({ email_address: 'cliente@example.com', password: 'password123' }).subscribe();
+    http.expectOne(`${API_URL}/session`).flush({
+      data: {
+        id: 1,
+        first_name: 'Ana',
+        last_name: 'Pérez',
+        email_address: 'cliente@example.com',
+        phone: null,
+      },
+      token: 'opaque-token',
+    });
+
+    service
+      .updateProfile({
+        first_name: 'Anita',
+        last_name: 'Pérez',
+        email_address: 'cliente@example.com',
+        phone: '1122334455',
+      })
+      .subscribe();
+
+    const request = http.expectOne(`${API_URL}/profile`);
+    expect(request.request.method).toBe('PATCH');
+    expect(request.request.body.user.first_name).toBe('Anita');
+    request.flush({
+      data: {
+        id: 1,
+        first_name: 'Anita',
+        last_name: 'Pérez',
+        email_address: 'cliente@example.com',
+        phone: '1122334455',
+      },
+    });
+
+    expect(service.session()?.user.first_name).toBe('Anita');
+  });
 });

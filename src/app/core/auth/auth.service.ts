@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { finalize, Observable, tap } from 'rxjs';
 import { API_URL } from '../config/api.config';
-import { AuthResponse } from '../models/api.models';
+import { ApiResponse, AuthResponse, User } from '../models/api.models';
 import { SessionStorageService } from './session-storage.service';
 
 export interface LoginCredentials {
@@ -15,6 +15,15 @@ export interface RegistrationData extends LoginCredentials {
   last_name: string;
   phone: string;
   password_confirmation: string;
+}
+
+export interface ProfileUpdateData {
+  first_name: string;
+  last_name: string;
+  email_address: string;
+  phone: string;
+  password?: string;
+  password_confirmation?: string;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -36,6 +45,18 @@ export class AuthService {
       .pipe(tap((response) => this.save(response)));
   }
 
+  profile(): Observable<ApiResponse<User>> {
+    return this.http
+      .get<ApiResponse<User>>(`${API_URL}/profile`)
+      .pipe(tap(({ data }) => this.updateUser(data)));
+  }
+
+  updateProfile(data: ProfileUpdateData): Observable<ApiResponse<User>> {
+    return this.http
+      .patch<ApiResponse<User>>(`${API_URL}/profile`, { user: data })
+      .pipe(tap((response) => this.updateUser(response.data)));
+  }
+
   logout(): Observable<void> {
     return this.http.delete<void>(`${API_URL}/session`).pipe(finalize(() => this.clear()));
   }
@@ -47,5 +68,10 @@ export class AuthService {
   private save(response: AuthResponse): void {
     const session = { token: response.token, user: response.data };
     this.storage.write(session);
+  }
+
+  private updateUser(user: User): void {
+    const session = this.session();
+    if (session) this.storage.write({ ...session, user });
   }
 }

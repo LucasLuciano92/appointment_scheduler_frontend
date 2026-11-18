@@ -19,6 +19,11 @@ export class Login {
 
   protected readonly submitting = signal(false);
   protected readonly error = signal('');
+  protected readonly notice = signal(
+    this.route.snapshot.queryParamMap.get('passwordUpdated') === 'true'
+      ? 'Tu contraseña fue actualizada. Ingresá nuevamente.'
+      : '',
+  );
   protected readonly form = this.fb.nonNullable.group({
     email_address: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(8)]],

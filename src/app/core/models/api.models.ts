@@ -31,6 +31,16 @@ export interface ApiResponse<T> {
   data: T;
 }
 
+export interface PaginationMeta {
+  page: number;
+  per_page: number;
+  next_page: number | null;
+}
+
+export interface PaginatedApiResponse<T> extends ApiResponse<T[]> {
+  meta: PaginationMeta;
+}
+
 export interface AuthResponse extends ApiResponse<User> {
   token: string;
 }
@@ -46,7 +56,7 @@ export interface Appointment {
   status: string;
   notes: string | null;
   service: Service;
-  staff_member: StaffMember;
+  staff_member: Pick<StaffMember, 'id' | 'first_name' | 'last_name'>;
   created_at: string;
   updated_at: string;
 }

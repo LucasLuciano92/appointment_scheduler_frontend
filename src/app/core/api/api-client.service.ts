@@ -2,7 +2,14 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { API_URL } from '../config/api.config';
-import { ApiResponse, Appointment, Service, Slot, StaffMember } from '../models/api.models';
+import {
+  ApiResponse,
+  Appointment,
+  PaginatedApiResponse,
+  Service,
+  Slot,
+  StaffMember,
+} from '../models/api.models';
 
 @Injectable({ providedIn: 'root' })
 export class ApiClientService {
@@ -42,5 +49,14 @@ export class ApiClientService {
         notes: notes || null,
       },
     });
+  }
+
+  appointments(page = 1): Observable<PaginatedApiResponse<Appointment>> {
+    const params = new HttpParams().set('page', page);
+    return this.http.get<PaginatedApiResponse<Appointment>>(`${API_URL}/appointments`, { params });
+  }
+
+  cancelAppointment(id: number): Observable<ApiResponse<Appointment>> {
+    return this.http.patch<ApiResponse<Appointment>>(`${API_URL}/appointments/${id}/cancel`, {});
   }
 }
