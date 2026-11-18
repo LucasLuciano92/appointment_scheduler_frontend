@@ -26,15 +26,35 @@
         <div class="row">
           <label>
             Nombre
-            <input formControlName="first_name" autocomplete="given-name" />
-            @if (fieldError('first_name')) {
+            <input
+              formControlName="first_name"
+              autocomplete="given-name"
+              [attr.aria-invalid]="
+                (form.controls.first_name.touched && form.controls.first_name.invalid) ||
+                !!fieldError('first_name')
+              "
+            />
+            @if (
+              form.controls.first_name.touched && form.controls.first_name.hasError('required')
+            ) {
+              <small>Ingresá tu nombre.</small>
+            } @else if (fieldError('first_name')) {
               <small>{{ fieldError('first_name') }}</small>
             }
           </label>
           <label>
             Apellido
-            <input formControlName="last_name" autocomplete="family-name" />
-            @if (fieldError('last_name')) {
+            <input
+              formControlName="last_name"
+              autocomplete="family-name"
+              [attr.aria-invalid]="
+                (form.controls.last_name.touched && form.controls.last_name.invalid) ||
+                !!fieldError('last_name')
+              "
+            />
+            @if (form.controls.last_name.touched && form.controls.last_name.hasError('required')) {
+              <small>Ingresá tu apellido.</small>
+            } @else if (fieldError('last_name')) {
               <small>{{ fieldError('last_name') }}</small>
             }
           </label>

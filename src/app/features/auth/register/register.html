@@ -17,7 +17,9 @@
             !!fieldError('first_name')
           "
         />
-        @if (fieldError('first_name')) {
+        @if (form.controls.first_name.touched && form.controls.first_name.hasError('required')) {
+          <small>Ingresá tu nombre.</small>
+        } @else if (fieldError('first_name')) {
           <small>{{ fieldError('first_name') }}</small>
         }
       </label>
@@ -31,7 +33,9 @@
             !!fieldError('last_name')
           "
         />
-        @if (fieldError('last_name')) {
+        @if (form.controls.last_name.touched && form.controls.last_name.hasError('required')) {
+          <small>Ingresá tu apellido.</small>
+        } @else if (fieldError('last_name')) {
           <small>{{ fieldError('last_name') }}</small>
         }
       </label>
@@ -83,9 +87,18 @@
           type="password"
           formControlName="password_confirmation"
           autocomplete="new-password"
-          [attr.aria-invalid]="!!fieldError('password_confirmation')"
+          [attr.aria-invalid]="
+            (form.controls.password_confirmation.touched &&
+              form.controls.password_confirmation.invalid) ||
+            !!fieldError('password_confirmation')
+          "
         />
-        @if (fieldError('password_confirmation')) {
+        @if (
+          form.controls.password_confirmation.touched &&
+          form.controls.password_confirmation.hasError('required')
+        ) {
+          <small>Repetí la contraseña.</small>
+        } @else if (fieldError('password_confirmation')) {
           <small>{{ fieldError('password_confirmation') }}</small>
         }
       </label>
@@ -97,5 +110,8 @@
       {{ submitting() ? 'Creando cuenta…' : 'Crear cuenta' }}
     </button>
   </form>
-  <p class="alternate">¿Ya tenés cuenta? <a routerLink="/ingresar">Ingresá</a></p>
+  <p class="alternate">
+    ¿Ya tenés cuenta?
+    <a routerLink="/ingresar" [queryParams]="{ returnUrl: returnUrl }">Ingresá</a>
+  </p>
 </section>

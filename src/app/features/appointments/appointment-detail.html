@@ -1,0 +1,79 @@
+<a class="back" routerLink="/turnos">← Volver a mis turnos</a>
+
+@if (loading()) {
+  <p class="state" role="status">Cargando detalle del turno…</p>
+} @else if (error() && !appointment()) {
+  <div class="state error" role="alert">
+    <p>{{ error() }}</p>
+    <button type="button" (click)="load()">Reintentar</button>
+  </div>
+} @else if (appointment(); as item) {
+  <article>
+    <header>
+      <div>
+        <p class="eyebrow">Detalle del turno</p>
+        <h1>{{ item.service.name }}</h1>
+      </div>
+      <span class="status" [class]="'status ' + item.status">{{ statusLabel(item.status) }}</span>
+    </header>
+
+    @if (success()) {
+      <div class="message success" role="status">{{ success() }}</div>
+    }
+    @if (error()) {
+      <div class="message error" role="alert">{{ error() }}</div>
+    }
+
+    <dl>
+      <div>
+        <dt>Fecha</dt>
+        <dd>{{ item.starts_at | date: 'dd/MM/yyyy' }}</dd>
+      </div>
+      <div>
+        <dt>Horario</dt>
+        <dd>{{ item.starts_at | date: 'HH:mm' }}–{{ item.ends_at | date: 'HH:mm' }}</dd>
+      </div>
+      <div>
+        <dt>Profesional</dt>
+        <dd>{{ item.staff_member.first_name }} {{ item.staff_member.last_name }}</dd>
+      </div>
+      <div>
+        <dt>Duración</dt>
+        <dd>{{ item.service.duration_minutes }} min</dd>
+      </div>
+      <div>
+        <dt>Valor</dt>
+        <dd>{{ +item.service.price | currency: 'ARS' : 'symbol-narrow' : '1.0-0' }}</dd>
+      </div>
+    </dl>
+
+    @if (item.notes) {
+      <section>
+        <h2>Notas</h2>
+        <p>{{ item.notes }}</p>
+      </section>
+    }
+
+    @if (confirmingCancellation()) {
+      <div class="confirmation" role="alert">
+        <p>¿Confirmás que querés cancelar este turno?</p>
+        <div>
+          <button class="danger" type="button" [disabled]="cancelling()" (click)="cancel()">
+            {{ cancelling() ? 'Cancelando…' : 'Sí, cancelar' }}
+          </button>
+          <button
+            type="button"
+            [disabled]="cancelling()"
+            (click)="confirmingCancellation.set(false)"
+          >
+            Conservar turno
+          </button>
+        </div>
+      </div>
+    } @else if (canCancel()) {
+      <button class="cancel-action" type="button" (click)="confirmingCancellation.set(true)">
+        Cancelar turno
+      </button>
+    }
+  </article>
+}

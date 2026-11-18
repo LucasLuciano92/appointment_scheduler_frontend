@@ -49,11 +49,13 @@ export interface ApiErrorBody {
   error: { code: string; message: string; details?: Record<string, string[]> };
 }
 
+export type AppointmentStatus = 'scheduled' | 'cancelled' | 'completed';
+
 export interface Appointment {
   id: number;
   starts_at: string;
   ends_at: string;
-  status: string;
+  status: AppointmentStatus;
   notes: string | null;
   service: Service;
   staff_member: Pick<StaffMember, 'id' | 'first_name' | 'last_name'>;

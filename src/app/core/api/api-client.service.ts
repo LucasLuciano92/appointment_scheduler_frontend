@@ -5,6 +5,7 @@ import { API_URL } from '../config/api.config';
 import {
   ApiResponse,
   Appointment,
+  AppointmentStatus,
   PaginatedApiResponse,
   Service,
   Slot,
@@ -51,9 +52,17 @@ export class ApiClientService {
     });
   }
 
-  appointments(page = 1): Observable<PaginatedApiResponse<Appointment>> {
-    const params = new HttpParams().set('page', page);
+  appointments(
+    page = 1,
+    status: AppointmentStatus | '' = '',
+  ): Observable<PaginatedApiResponse<Appointment>> {
+    let params = new HttpParams().set('page', page);
+    if (status) params = params.set('status', status);
     return this.http.get<PaginatedApiResponse<Appointment>>(`${API_URL}/appointments`, { params });
+  }
+
+  appointment(id: number): Observable<ApiResponse<Appointment>> {
+    return this.http.get<ApiResponse<Appointment>>(`${API_URL}/appointments/${id}`);
   }
 
   cancelAppointment(id: number): Observable<ApiResponse<Appointment>> {

@@ -3,7 +3,10 @@
 @if (loading()) {
   <p role="status">Cargando disponibilidad…</p>
 } @else if (!service()) {
-  <div class="message error" role="alert">{{ error() || 'No encontramos el servicio.' }}</div>
+  <div class="state error" role="alert">
+    <p>{{ error() || 'No encontramos el servicio.' }}</p>
+    <button type="button" (click)="load()">Reintentar</button>
+  </div>
 } @else {
   <div class="booking-grid">
     <section>
@@ -18,6 +21,16 @@
       }
       @if (success()) {
         <div class="message success" role="status">{{ success() }}</div>
+      }
+      @if (confirmedAppointment(); as appointment) {
+        <div class="confirmed-appointment">
+          <strong>{{ appointment.service.name }}</strong>
+          <span>
+            {{ appointment.starts_at | date: 'dd/MM/yyyy HH:mm' }} ·
+            {{ appointment.staff_member.first_name }} {{ appointment.staff_member.last_name }}
+          </span>
+          <a [routerLink]="['/turnos', appointment.id]">Ver turno confirmado</a>
+        </div>
       }
 
       <div class="steps">
@@ -87,7 +100,7 @@
           </label>
           @if (!auth.session()) {
             <p class="muted">
-              Al confirmar te pediremos iniciar sesión. Tu selección se conservará.
+              Al confirmar te pediremos iniciar sesión. Tu selección se conservará en esta pestaña.
             </p>
           }
           <button class="primary" type="button" [disabled]="!canSubmit()" (click)="reserve()">

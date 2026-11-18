@@ -4,6 +4,7 @@ import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
 import { ApiClientService } from '../api/api-client.service';
 import { SessionStorageService } from './session-storage.service';
+import { AuthService } from './auth.service';
 import { authInterceptor } from './auth.interceptor';
 
 describe('authInterceptor', () => {
@@ -70,5 +71,22 @@ describe('authInterceptor', () => {
 
     expect(storage.read()).toBeNull();
     expect(navigate).toHaveBeenCalled();
+  });
+
+  it('keeps login validation errors on the login screen', () => {
+    const router = TestBed.inject(Router);
+    const navigate = vi.spyOn(router, 'navigate').mockResolvedValue(true);
+
+    TestBed.inject(AuthService)
+      .login({ email_address: 'ana@example.com', password: 'incorrecta' })
+      .subscribe({ error: () => undefined });
+    http
+      .expectOne((candidate) => candidate.url.endsWith('/session'))
+      .flush(
+        { error: { code: 'invalid_credentials', message: 'Credenciales inválidas.' } },
+        { status: 401, statusText: 'Unauthorized' },
+      );
+
+    expect(navigate).not.toHaveBeenCalled();
   });
 });

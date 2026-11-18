@@ -28,6 +28,7 @@ export class Login {
     email_address: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(8)]],
   });
+  protected readonly returnUrl = this.safeReturnUrl();
 
   protected submit(): void {
     if (this.form.invalid || this.submitting()) {
@@ -40,7 +41,7 @@ export class Login {
       .login(this.form.getRawValue())
       .pipe(finalize(() => this.submitting.set(false)))
       .subscribe({
-        next: () => void this.router.navigateByUrl(this.safeReturnUrl()),
+        next: () => void this.router.navigateByUrl(this.returnUrl),
         error: (error) => this.error.set(apiErrorMessage(error)),
       });
   }

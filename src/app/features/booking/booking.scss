@@ -149,6 +149,37 @@ button:disabled {
   padding: 0.65rem;
   border-radius: 0.6rem;
 }
+
+.state,
+.confirmed-appointment {
+  margin-top: 0.75rem;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 0.8rem;
+  background: white;
+}
+
+.state button {
+  margin-top: 0.5rem;
+}
+
+.confirmed-appointment {
+  display: grid;
+  gap: 0.3rem;
+  border-color: #b9ddc5;
+  background: #f2fbf5;
+}
+
+.confirmed-appointment span {
+  color: var(--muted);
+}
+
+.confirmed-appointment a {
+  width: fit-content;
+  margin-top: 0.35rem;
+  color: var(--primary);
+  font-weight: 700;
+}
 .error {
   color: #a12828;
   background: #fff0f0;

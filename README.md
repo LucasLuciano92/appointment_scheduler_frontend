@@ -21,8 +21,10 @@ orientada al cliente final y consume exclusivamente la API JSON bajo `/api/v1`.
 - recuperación global ante sesiones inválidas o vencidas;
 - catálogo de servicios con imágenes, precios y duración;
 - selección de profesional, fecha y horario disponible;
-- creación de reservas con confirmación y manejo de errores;
-- historial paginado de turnos propios y cancelación de turnos futuros;
+- creación de reservas con recuperación de la selección después del login,
+  confirmación persistida y manejo de errores;
+- historial paginado y filtrable de turnos propios;
+- detalle y cancelación de turnos futuros;
 - consulta y edición de perfil, incluido el cambio de contraseña;
 - estados de carga, vacío, error y confirmación en los flujos principales;
 - navegación responsive y utilizable mediante teclado.
@@ -108,8 +110,18 @@ npm run build
 npm audit --omit=dev --audit-level=high
 ```
 
-La suite cubre autenticación, sesión, interceptor, creación y cancelación de
-reservas, errores de API y actualización de perfil.
+La suite contiene 29 pruebas y cubre autenticación, guardas, sesión, interceptor,
+creación, recuperación y cancelación de reservas, filtros, detalle, errores de
+API y actualización de perfil.
+
+La comprobación integrada debe realizarse con ambos servidores activos e incluir:
+
+1. iniciar sesión con el cliente de demostración;
+2. elegir servicio, profesional, fecha y horario y crear un turno;
+3. consultar el turno en el historial, filtrarlo y abrir su detalle;
+4. cancelar el turno;
+5. provocar un error controlado, por ejemplo intentando confirmar un horario que
+   dejó de estar disponible.
 
 ### Back-end
 
