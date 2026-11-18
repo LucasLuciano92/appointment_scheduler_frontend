@@ -57,10 +57,17 @@ small,
 .error {
   color: #a12828;
 }
-.error {
+.error,
+.success {
   padding: 0.8rem;
   border-radius: 0.6rem;
+}
+.error {
   background: #fff0f0;
+}
+.success {
+  color: #146b38;
+  background: #eaf8ef;
 }
 button {
   margin-top: 0.5rem;

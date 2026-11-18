@@ -66,3 +66,17 @@ select,
 textarea {
   font: inherit;
 }
+
+:where(a, button, input, select, textarea):focus-visible {
+  outline: 3px solid var(--sand);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}

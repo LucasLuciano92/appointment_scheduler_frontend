@@ -2,7 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { finalize } from 'rxjs';
-import { apiErrorMessage } from '../../../core/api/api-error';
+import { apiErrorMessage, apiFieldErrors } from '../../../core/api/api-error';
 import { AuthService } from '../../../core/auth/auth.service';
 
 @Component({
@@ -17,6 +17,7 @@ export class Register {
   private readonly router = inject(Router);
   protected readonly submitting = signal(false);
   protected readonly error = signal('');
+  protected readonly fieldErrors = signal<Record<string, string[]>>({});
   protected readonly form = this.fb.nonNullable.group({
     first_name: ['', Validators.required],
     last_name: ['', Validators.required],
@@ -38,12 +39,20 @@ export class Register {
     }
     this.submitting.set(true);
     this.error.set('');
+    this.fieldErrors.set({});
     this.auth
       .register(value)
       .pipe(finalize(() => this.submitting.set(false)))
       .subscribe({
         next: () => void this.router.navigate(['/servicios']),
-        error: (error) => this.error.set(apiErrorMessage(error)),
+        error: (error) => {
+          this.error.set(apiErrorMessage(error));
+          this.fieldErrors.set(apiFieldErrors(error));
+        },
       });
+  }
+
+  protected fieldError(field: string): string {
+    return this.fieldErrors()[field]?.join('. ') ?? '';
   }
 }

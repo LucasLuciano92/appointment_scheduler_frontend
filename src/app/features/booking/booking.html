@@ -33,7 +33,10 @@
                 [class.selected]="
                   selectedStaff()?.service_offering_id === person.service_offering_id
                 "
-                (click)="selectedStaff.set(person); selectedSlot.set(null); slots.set([])"
+                [attr.aria-pressed]="
+                  selectedStaff()?.service_offering_id === person.service_offering_id
+                "
+                (click)="chooseStaff(person)"
               >
                 {{ person.first_name }} {{ person.last_name }}
               </button>
@@ -50,9 +53,12 @@
               [(ngModel)]="date"
               [min]="minDate"
               [disabled]="!selectedStaff()"
+              [attr.aria-busy]="slotsLoading()"
               (change)="loadSlots()"
           /></label>
-          @if (date && selectedStaff() && slots().length === 0) {
+          @if (slotsLoading()) {
+            <p class="muted" role="status">Buscando horarios disponibles…</p>
+          } @else if (date && selectedStaff() && slots().length === 0) {
             <p class="muted">No hay horarios libres para esta fecha.</p>
           }
           <div class="options slots">
@@ -60,6 +66,7 @@
               <button
                 type="button"
                 [class.selected]="selectedSlot()?.starts_at === slot.starts_at"
+                [attr.aria-pressed]="selectedSlot()?.starts_at === slot.starts_at"
                 (click)="selectedSlot.set(slot)"
               >
                 {{ slot.starts_at | date: 'HH:mm' }}

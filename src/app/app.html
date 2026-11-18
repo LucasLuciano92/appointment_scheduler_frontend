@@ -1,3 +1,5 @@
+<a class="skip-link" href="#main-content">Saltar al contenido</a>
+
 <header class="site-header">
   <a class="brand" routerLink="/servicios" aria-label="Ir al inicio">
     <span class="brand__mark" aria-hidden="true">
@@ -10,18 +12,20 @@
     <span>Estudio Aura</span>
   </a>
   <nav aria-label="Navegación principal">
-    <a routerLink="/servicios" routerLinkActive="active">Servicios</a>
+    <a routerLink="/servicios" routerLinkActive="active" ariaCurrentWhenActive="page">Servicios</a>
     @if (auth.session()) {
-      <a routerLink="/turnos" routerLinkActive="active">Mis turnos</a>
-      <a routerLink="/perfil" routerLinkActive="active">Perfil</a>
+      <a routerLink="/turnos" routerLinkActive="active" ariaCurrentWhenActive="page">Mis turnos</a>
+      <a routerLink="/perfil" routerLinkActive="active" ariaCurrentWhenActive="page">Perfil</a>
       <button class="button" type="button" (click)="logout()">Salir</button>
     } @else {
-      <a routerLink="/registro" routerLinkActive="active">Registrarse</a>
+      <a routerLink="/registro" routerLinkActive="active" ariaCurrentWhenActive="page"
+        >Registrarse</a
+      >
       <a class="button" routerLink="/ingresar">Ingresar</a>
     }
   </nav>
 </header>
 
-<main><router-outlet /></main>
+<main id="main-content" tabindex="-1"><router-outlet /></main>
 
 <footer>Estudio Aura · Programación IV · {{ year }}</footer>

@@ -1,0 +1,92 @@
+<section class="profile-card">
+  <header>
+    <p class="eyebrow">Tu cuenta</p>
+    <h1>Mi perfil</h1>
+    <p>Actualizá tus datos personales o cambiá tu contraseña.</p>
+  </header>
+
+  @if (loading()) {
+    <p class="state" role="status">Cargando perfil…</p>
+  } @else if (error() && form.pristine) {
+    <div class="state error" role="alert">
+      <p>{{ error() }}</p>
+      <button type="button" (click)="load()">Reintentar</button>
+    </div>
+  } @else {
+    @if (success()) {
+      <div class="message success" role="status">{{ success() }}</div>
+    }
+    @if (error()) {
+      <div class="message error" role="alert">{{ error() }}</div>
+    }
+
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <fieldset>
+        <legend>Datos personales</legend>
+        <div class="row">
+          <label>
+            Nombre
+            <input formControlName="first_name" autocomplete="given-name" />
+            @if (fieldError('first_name')) {
+              <small>{{ fieldError('first_name') }}</small>
+            }
+          </label>
+          <label>
+            Apellido
+            <input formControlName="last_name" autocomplete="family-name" />
+            @if (fieldError('last_name')) {
+              <small>{{ fieldError('last_name') }}</small>
+            }
+          </label>
+        </div>
+        <label>
+          Email
+          <input type="email" formControlName="email_address" autocomplete="email" />
+          @if (form.controls.email_address.touched && form.controls.email_address.invalid) {
+            <small>Ingresá un email válido.</small>
+          } @else if (fieldError('email_address')) {
+            <small>{{ fieldError('email_address') }}</small>
+          }
+        </label>
+        <label>
+          Teléfono (opcional)
+          <input formControlName="phone" autocomplete="tel" />
+          @if (fieldError('phone')) {
+            <small>{{ fieldError('phone') }}</small>
+          }
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Cambiar contraseña</legend>
+        <p class="hint">Dejá estos campos vacíos si no querés cambiarla.</p>
+        <div class="row">
+          <label>
+            Nueva contraseña
+            <input type="password" formControlName="password" autocomplete="new-password" />
+            @if (form.controls.password.touched && form.controls.password.invalid) {
+              <small>Debe tener al menos 8 caracteres.</small>
+            } @else if (fieldError('password')) {
+              <small>{{ fieldError('password') }}</small>
+            }
+          </label>
+          <label>
+            Repetir contraseña
+            <input
+              type="password"
+              formControlName="password_confirmation"
+              autocomplete="new-password"
+            />
+            @if (fieldError('password_confirmation')) {
+              <small>{{ fieldError('password_confirmation') }}</small>
+            }
+          </label>
+        </div>
+      </fieldset>
+
+      <button type="submit" [disabled]="submitting()">
+        {{ submitting() ? 'Guardando…' : 'Guardar cambios' }}
+      </button>
+    </form>
+  }
+</section>

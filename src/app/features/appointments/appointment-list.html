@@ -1,0 +1,119 @@
+<header class="page-heading">
+  <div>
+    <p class="eyebrow">Tu agenda</p>
+    <h1>Mis turnos</h1>
+    <p>Consultá tus reservas y cancelá las que todavía no comenzaron.</p>
+  </div>
+  <a routerLink="/servicios">Reservar otro turno</a>
+</header>
+
+@if (success()) {
+  <div class="message success" role="status">{{ success() }}</div>
+}
+
+@if (loading()) {
+  <p class="state" role="status">Cargando turnos…</p>
+} @else if (error() && appointments().length === 0) {
+  <div class="state error" role="alert">
+    <p>{{ error() }}</p>
+    <button type="button" (click)="load()">Reintentar</button>
+  </div>
+} @else if (appointments().length === 0) {
+  <div class="state empty">
+    <h2>Todavía no tenés turnos</h2>
+    <p>Elegí un servicio y encontrá un horario disponible.</p>
+    <a routerLink="/servicios">Ver servicios</a>
+  </div>
+} @else {
+  @if (error()) {
+    <div class="message error" role="alert">{{ error() }}</div>
+  }
+
+  <div class="appointment-list">
+    @for (appointment of appointments(); track appointment.id) {
+      <article>
+        <div class="date-block" aria-hidden="true">
+          <strong>{{ appointment.starts_at | date: 'dd' }}</strong>
+          <span>{{ appointment.starts_at | date: 'MMM' }}</span>
+        </div>
+
+        <div class="details">
+          <div class="title-row">
+            <div>
+              <h2>{{ appointment.service.name }}</h2>
+              <p>
+                {{ appointment.starts_at | date: 'dd/MM/yyyy' }} ·
+                {{ appointment.starts_at | date: 'HH:mm' }}–{{
+                  appointment.ends_at | date: 'HH:mm'
+                }}
+              </p>
+            </div>
+            <span class="status" [class]="'status ' + appointment.status">
+              {{ statusLabel(appointment.status) }}
+            </span>
+          </div>
+
+          <dl>
+            <div>
+              <dt>Profesional</dt>
+              <dd>
+                {{ appointment.staff_member.first_name }} {{ appointment.staff_member.last_name }}
+              </dd>
+            </div>
+            <div>
+              <dt>Duración</dt>
+              <dd>{{ appointment.service.duration_minutes }} min</dd>
+            </div>
+            <div>
+              <dt>Valor</dt>
+              <dd>
+                {{ +appointment.service.price | currency: 'ARS' : 'symbol-narrow' : '1.0-0' }}
+              </dd>
+            </div>
+          </dl>
+
+          @if (appointment.notes) {
+            <p class="notes"><strong>Notas:</strong> {{ appointment.notes }}</p>
+          }
+
+          @if (pendingCancellationId() === appointment.id) {
+            <div class="confirmation" role="alert">
+              <p>¿Confirmás que querés cancelar este turno?</p>
+              <div>
+                <button
+                  class="danger"
+                  type="button"
+                  [disabled]="cancellingId() !== null"
+                  (click)="cancel(appointment)"
+                >
+                  {{ cancellingId() === appointment.id ? 'Cancelando…' : 'Sí, cancelar' }}
+                </button>
+                <button
+                  type="button"
+                  [disabled]="cancellingId() !== null"
+                  (click)="dismissCancellation()"
+                >
+                  Conservar turno
+                </button>
+              </div>
+            </div>
+          } @else if (canCancel(appointment)) {
+            <button
+              class="cancel-action"
+              type="button"
+              (click)="requestCancellation(appointment.id)"
+            >
+              Cancelar turno
+            </button>
+          }
+        </div>
+      </article>
+    }
+  </div>
+
+  @if (nextPage()) {
+    <button class="load-more" type="button" [disabled]="loadingMore()" (click)="load(nextPage()!)">
+      {{ loadingMore() ? 'Cargando…' : 'Cargar turnos anteriores' }}
+    </button>
+  }
+}

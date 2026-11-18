@@ -25,6 +25,7 @@ export class Booking {
   protected readonly selectedStaff = signal<StaffMember | null>(null);
   protected readonly selectedSlot = signal<Slot | null>(null);
   protected readonly loading = signal(true);
+  protected readonly slotsLoading = signal(false);
   protected readonly submitting = signal(false);
   protected readonly error = signal('');
   protected readonly success = signal('');
@@ -63,10 +64,14 @@ export class Booking {
     const member = this.selectedStaff();
     if (!member || !this.date) return;
     this.error.set('');
-    this.api.slots(member.service_offering_id, this.date).subscribe({
-      next: ({ data }) => this.slots.set(data),
-      error: (error) => this.error.set(apiErrorMessage(error)),
-    });
+    this.slotsLoading.set(true);
+    this.api
+      .slots(member.service_offering_id, this.date)
+      .pipe(finalize(() => this.slotsLoading.set(false)))
+      .subscribe({
+        next: ({ data }) => this.slots.set(data),
+        error: (error) => this.error.set(apiErrorMessage(error)),
+      });
   }
 
   protected reserve(): void {
